@@ -1,0 +1,133 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.wrap{padding:20px 16px 28px}
+.center{background:var(--color-background-secondary);border:1.5px solid var(--color-border-primary);border-radius:var(--border-radius-lg);padding:10px 24px;text-align:center;width:fit-content;margin:0 auto 28px;font-size:15px;font-weight:500;color:var(--color-text-primary)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{border-radius:var(--border-radius-lg);padding:14px 16px;border:1px solid transparent}
+.card.purple{background:#EEEDFE;border-color:#AFA9EC}
+.card.teal  {background:#E1F5EE;border-color:#5DCAA5}
+.card.coral {background:#FAECE7;border-color:#F0997B}
+.card.amber {background:#FAEEDA;border-color:#EF9F27}
+.card.blue  {background:#E6F1FB;border-color:#85B7EB}
+.card.green {background:#EAF3DE;border-color:#97C459}
+.card.pink  {background:#FBEAF0;border-color:#ED93B1}
+@media(prefers-color-scheme:dark){
+  .card.purple{background:#26215C;border-color:#534AB7;color:#EEEDFE}
+  .card.teal  {background:#04342C;border-color:#0F6E56;color:#E1F5EE}
+  .card.coral {background:#4A1B0C;border-color:#993C1D;color:#FAECE7}
+  .card.amber {background:#412402;border-color:#854F0B;color:#FAEEDA}
+  .card.blue  {background:#042C53;border-color:#185FA5;color:#E6F1FB}
+  .card.green {background:#173404;border-color:#3B6D11;color:#EAF3DE}
+  .card.pink  {background:#4B1528;border-color:#993356;color:#FBEAF0}
+}
+.card-title{font-size:12px;font-weight:500;margin-bottom:2px;opacity:.6}
+.card-file{font-size:13px;font-weight:500;margin-bottom:8px;font-family:var(--font-mono)}
+.item{font-size:12px;padding:2px 0;display:flex;align-items:baseline;gap:6px}
+.dot{width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.5;flex-shrink:0;margin-top:4px}
+.tag{font-size:10px;padding:1px 6px;border-radius:20px;background:rgba(0,0,0,.1);font-weight:500;margin-left:auto}
+@media(prefers-color-scheme:dark){.tag{background:rgba(255,255,255,.12)}}
+.full{grid-column:1/-1}
+.row{display:flex;gap:12px}
+.sub{flex:1}
+</style>
+<div class="wrap">
+  <div class="center">Módulo Usuário</div>
+  <div class="grid">
+
+    <div class="card purple full">
+      <div class="card-title">domain/usuario/</div>
+      <div class="card-file">usuario.js</div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:11px;font-weight:500;opacity:.5;margin-bottom:4px">Atributos privados</div>
+          <div class="item"><span class="dot"></span>#id</div>
+          <div class="item"><span class="dot"></span>#nome</div>
+          <div class="item"><span class="dot"></span>#email</div>
+          <div class="item"><span class="dot"></span>#senha</div>
+          <div class="item"><span class="dot"></span>#criadoEm</div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:500;opacity:.5;margin-bottom:4px">Métodos getters</div>
+          <div class="item"><span class="dot"></span>getId()</div>
+          <div class="item"><span class="dot"></span>getNome()</div>
+          <div class="item"><span class="dot"></span>getEmail()</div>
+          <div class="item"><span class="dot"></span>getSenha()</div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:500;opacity:.5;margin-bottom:4px">Comportamento</div>
+          <div class="item"><span class="dot"></span>validarEmail() <span class="tag">lança erro se inválido</span></div>
+          <div class="item"><span class="dot"></span>alterarNome(novoNome)</div>
+          <div class="item"><span class="dot"></span>alterarSenha(nova)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card teal">
+      <div class="card-title">dataSource/usuario/</div>
+      <div class="card-file">ArrayUsuarioDataSource.js</div>
+      <div class="item"><span class="dot"></span>criar(usuario)</div>
+      <div class="item"><span class="dot"></span>buscarPorId(id)</div>
+      <div class="item"><span class="dot"></span>listar()</div>
+      <div class="item"><span class="dot"></span>deletar(id)</div>
+    </div>
+
+    <div class="card coral">
+      <div class="card-title">repository/usuario/</div>
+      <div class="card-file">UsuarioRepository.js</div>
+      <div class="item"><span class="dot"></span>criar(usuario) <span class="tag">contrato</span></div>
+      <div class="item"><span class="dot"></span>buscarPorId(id)</div>
+      <div class="item"><span class="dot"></span>listar()</div>
+      <div class="item"><span class="dot"></span>deletar(id)</div>
+    </div>
+
+    <div class="card amber">
+      <div class="card-title">mapper/usuario/</div>
+      <div class="card-file">UsuarioMapper.js</div>
+      <div class="item"><span class="dot"></span>toDomain(raw) <span class="tag">raw → User</span></div>
+      <div class="item"><span class="dot"></span>toPersistence(usuario) <span class="tag">User → raw</span></div>
+    </div>
+
+    <div class="card blue full">
+      <div class="card-title">useCases/usuario/ — 4 arquivos</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px">
+        <div style="flex:1;min-width:160px">
+          <div class="card-file" style="margin-bottom:4px">CriarUsuarioUseCase.js</div>
+          <div class="item"><span class="dot"></span>executar(nome, email, senha)</div>
+        </div>
+        <div style="flex:1;min-width:160px">
+          <div class="card-file" style="margin-bottom:4px">BuscarUsuarioUseCase.js</div>
+          <div class="item"><span class="dot"></span>executar(id)</div>
+        </div>
+        <div style="flex:1;min-width:160px">
+          <div class="card-file" style="margin-bottom:4px">DeletarUsuarioUseCase.js</div>
+          <div class="item"><span class="dot"></span>executar(id)</div>
+        </div>
+        <div style="flex:1;min-width:160px">
+          <div class="card-file" style="margin-bottom:4px">ListarUsuariosUseCase.js</div>
+          <div class="item"><span class="dot"></span>executar()</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card green">
+      <div class="card-title">controllers/usuario/</div>
+      <div class="card-file">UsuarioController.js</div>
+      <div class="item"><span class="dot"></span>criar(req, res)</div>
+      <div class="item"><span class="dot"></span>buscar(req, res)</div>
+      <div class="item"><span class="dot"></span>deletar(req, res)</div>
+      <div class="item"><span class="dot"></span>listar(req, res)</div>
+    </div>
+
+    <div class="card pink">
+      <div class="card-title">routes/usuario/</div>
+      <div class="card-file">usuarioRoutes.js</div>
+      <div class="item"><span class="dot"></span>POST &nbsp;/usuarios</div>
+      <div class="item"><span class="dot"></span>GET &nbsp;&nbsp;/usuarios</div>
+      <div class="item"><span class="dot"></span>GET &nbsp;&nbsp;/usuarios/:id</div>
+      <div class="item"><span class="dot"></span>DELETE /usuarios/:id</div>
+    </div>
+
+  </div>
+</div>

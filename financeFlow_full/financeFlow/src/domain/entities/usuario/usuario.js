@@ -1,21 +1,23 @@
+import { v4 as uuidv4 } from 'uuid'
 import { AppError } from '../../errors/appError.js'
 import { Email } from '../../value-objects/email/email.js'
 import { Senha } from '../../value-objects/senha/senha.js'
 import { CPF } from '../../value-objects/cpf/cpf.js'
 
-class Usuario {
+export class Usuario {
     #id
     #nome
     #email
     #senha
     #cpf
     #criadoEm
-    constructor(id, nome, email, senha, cpf, criadoEm) {
-        this.#id = id
+
+    constructor(nome, email, senha, cpf) {
+        this.#id = uuidv4()        // gera o ID aqui dentro
         this.#nome = this.#validarNome(nome)
         this.#email = new Email(email)
         this.#senha = new Senha(senha)
-        this.#cpf = CPF(cpf)
+        this.#cpf = new CPF(cpf)
         this.#criadoEm = new Date()
     }
 
@@ -38,5 +40,4 @@ class Usuario {
     get senha() { return this.#senha.valor }
     get cpf() { return this.#cpf.valor }
     get criadoEm() { return this.#criadoEm }
-
 }

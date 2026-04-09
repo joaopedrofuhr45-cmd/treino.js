@@ -19,7 +19,7 @@ export class Transacao {
         this.#contaId = contaId
         this.#categoriaId = categoriaId
         this.#descricao = this.#validarDescricao(descricao)
-        this.#valor = new Dinheito(valor)
+        this.#valor = new Dinheiro(valor)
         this.#tipo = this.#validarTipo(tipo)
         this.#data = this.#validarData(data)
         this.#criadoEm = new Date()
@@ -28,9 +28,45 @@ export class Transacao {
     #validarTipo(tipo) {
         const tiposPermitidos = ['receita', 'despesa']
         if (!tiposPermitidos.includes(tipo)) {
-            throw new AppError('Tipo deve ser receita ou depesas', 400)
+            throw new AppError('Tipo deve ser receita ou despesa', 400)
         }
         return tipo
     }
 
+    #validarData(data) {
+        if (!data) {
+            throw new AppError('Data é obrigatória', 400)
+        }
+        const dataTransacao = new Date(data)
+        const hoje = new Date()
+        if (dataTransacao > hoje) {
+            throw new AppError('Não é possível lançar uma transação com data futura', 400)
+        }
+        return dataTransacao
+    }
+
+    #validarDescricao(descricao) {
+        if (!descricao || typeof descricao !== 'string') {
+            throw new AppError('Descrição é obrigatória', 400)
+        }
+        if (descricao.trim().length < 3) {
+            throw new AppError('Descrição deve ter no mínimo 3 caracteres', 400)
+        }
+        return descricao.trim()
+    }
+
+    aplicarNoSaldo(saldoAtual) {
+        if (this.#tipo === 'receita') return saldoAtual + this.#valor.valor
+        return saldoAtual - this.#valor.valor
+    }
+
+    get id() { return this.#id }
+    get usuarioId() { return this.#usuarioId }
+    get contaId() { return this.#contaId }
+    get categoriaId() { return this.#categoriaId }
+    get descricao() { return this.#descricao }
+    get valor() { return this.#valor.valor }
+    get tipo() { return this.#tipo }
+    get data() { return this.#data }
+    get criadoEm() { return this.#criadoEm }
 }

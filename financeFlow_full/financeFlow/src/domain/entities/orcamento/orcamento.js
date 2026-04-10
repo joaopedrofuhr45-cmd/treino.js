@@ -22,7 +22,29 @@ export class Orcamento {
         this.#periodo = new Periodo(inicio, fim)
         this.#totalGasto = new Dinheiro(0)
         this.#criadoEm = new Date()
+    }
 
+    adicionarGasto(valor) {
+        const novoTotal = this.#totalGasto.valor + valor
+        const limite90 = this.#valor.valor * 0.9
+        const limite100 = this.#valor.valor
+
+        if (novoTotal > limite100) {
+            throw new AppError('Orçamento excedido', 400)
+        }
+
+
+        if (novoTotal >= limite90) {
+            return new OrcamentoExcedidoEvent(
+                this.#id,
+                this.#usuarioId,
+                this.#categoriaId,
+                novoTotal,
+                this.#valor.valor
+            )
+        }
+
+        this.#totalGasto = new Dinheiro(novoTotal)
     }
 
 

@@ -1,8 +1,8 @@
-import { v4 as uuidv4 } from 'uuid'
 import { AppError } from '../../errors/appError.js'
 import { Email } from '../../value-objects/email/email.js'
 import { Senha } from '../../value-objects/senha/senha.js'
 import { CPF } from '../../value-objects/cpf/cpf.js'
+import { v4 as uuidv4 } from 'uuid'
 
 export class Usuario {
     #id
@@ -12,8 +12,8 @@ export class Usuario {
     #cpf
     #criadoEm
 
-    constructor(nome, email, senha, cpf) {
-        this.#id = uuidv4()        // gera o ID aqui dentro
+    constructor({ nome, email, senha, cpf }) {
+        this.#id = uuidv4()
         this.#nome = this.#validarNome(nome)
         this.#email = new Email(email)
         this.#senha = new Senha(senha)

@@ -7,7 +7,8 @@ export class Categoria {
     #nome
     #tipo
     #criadoEm
-    constructor(usuarioId, nome, tipo) {
+
+    constructor({ usuarioId, nome, tipo }) {
         this.#id = uuidv4()
         this.#usuarioId = usuarioId
         this.#nome = this.#validarNome(nome)
@@ -16,23 +17,15 @@ export class Categoria {
     }
 
     #validarNome(nome) {
-        if (!nome || typeof nome !== 'string') {
-            throw new AppError('Nome é obrigatório', 400)
-        }
-        if (nome.trim().length < 3) {
-            throw new AppError('Nome deve ter no mínimo 3 caracteres', 400)
-        }
-        if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(nome)) {
-            throw new AppError('Nome não pode conter números ou caracteres especiais', 400)
-        }
+        if (!nome || typeof nome !== 'string') throw new AppError('Nome é obrigatório', 400)
+        if (nome.trim().length < 3) throw new AppError('Nome deve ter no mínimo 3 caracteres', 400)
+        if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(nome)) throw new AppError('Nome inválido', 400)
         return nome.trim()
     }
 
     #validarTipo(tipo) {
         const tiposPermitidos = ['receita', 'despesa']
-        if (!tiposPermitidos.includes(tipo)) {
-            throw new AppError('Tipo deve ser receita ou depesas', 400)
-        }
+        if (!tiposPermitidos.includes(tipo)) throw new AppError('Tipo deve ser receita ou despesa', 400)
         return tipo
     }
 
@@ -41,6 +34,4 @@ export class Categoria {
     get nome() { return this.#nome }
     get tipo() { return this.#tipo }
     get criadoEm() { return this.#criadoEm }
-
-
 }

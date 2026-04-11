@@ -1,8 +1,8 @@
 import { AppError } from '../../errors/appError.js'
 import { Dinheiro } from '../../value-objects/dinheiro/dinheiro.js'
 import { Periodo } from '../../value-objects/periodo/periodo.js'
+import { OrcamentoExcedidoEvent } from '../../events/orcamento/OrcamentoExcedidoEvent.js'
 import { v4 as uuidv4 } from 'uuid'
-
 
 export class Orcamento {
     #id
@@ -13,8 +13,7 @@ export class Orcamento {
     #totalGasto
     #criadoEm
 
-    constructor(usuarioId, categoriaId, valor, inicio, fim) {
-
+    constructor({ usuarioId, categoriaId, valor, inicio, fim }) {
         this.#id = uuidv4()
         this.#usuarioId = usuarioId
         this.#categoriaId = categoriaId
@@ -29,10 +28,7 @@ export class Orcamento {
         const limite90 = this.#valor.valor * 0.9
         const limite100 = this.#valor.valor
 
-        if (novoTotal > limite100) {
-            throw new AppError('Orçamento excedido', 400)
-        }
-
+        if (novoTotal > limite100) throw new AppError('Orçamento excedido', 400)
 
         if (novoTotal >= limite90) {
             return new OrcamentoExcedidoEvent(
@@ -46,7 +42,6 @@ export class Orcamento {
 
         this.#totalGasto = new Dinheiro(novoTotal)
     }
-
 
     get id() { return this.#id }
     get usuarioId() { return this.#usuarioId }

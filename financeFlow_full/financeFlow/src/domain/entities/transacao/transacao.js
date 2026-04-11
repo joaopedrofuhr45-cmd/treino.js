@@ -13,7 +13,7 @@ export class Transacao {
     #data
     #criadoEm
 
-    constructor(usuarioId, contaId, categoriaId, descricao, valor, tipo, data) {
+    constructor({ usuarioId, contaId, categoriaId, descricao, valor, tipo, data }) {
         this.#id = uuidv4()
         this.#usuarioId = usuarioId
         this.#contaId = contaId
@@ -25,34 +25,23 @@ export class Transacao {
         this.#criadoEm = new Date()
     }
 
+    #validarDescricao(descricao) {
+        if (!descricao || typeof descricao !== 'string') throw new AppError('Descrição é obrigatória', 400)
+        if (descricao.trim().length < 3) throw new AppError('Descrição deve ter no mínimo 3 caracteres', 400)
+        return descricao.trim()
+    }
+
     #validarTipo(tipo) {
         const tiposPermitidos = ['receita', 'despesa']
-        if (!tiposPermitidos.includes(tipo)) {
-            throw new AppError('Tipo deve ser receita ou despesa', 400)
-        }
+        if (!tiposPermitidos.includes(tipo)) throw new AppError('Tipo deve ser receita ou despesa', 400)
         return tipo
     }
 
     #validarData(data) {
-        if (!data) {
-            throw new AppError('Data é obrigatória', 400)
-        }
+        if (!data) throw new AppError('Data é obrigatória', 400)
         const dataTransacao = new Date(data)
-        const hoje = new Date()
-        if (dataTransacao > hoje) {
-            throw new AppError('Não é possível lançar uma transação com data futura', 400)
-        }
+        if (dataTransacao > new Date()) throw new AppError('Não é possível lançar transação com data futura', 400)
         return dataTransacao
-    }
-
-    #validarDescricao(descricao) {
-        if (!descricao || typeof descricao !== 'string') {
-            throw new AppError('Descrição é obrigatória', 400)
-        }
-        if (descricao.trim().length < 3) {
-            throw new AppError('Descrição deve ter no mínimo 3 caracteres', 400)
-        }
-        return descricao.trim()
     }
 
     aplicarNoSaldo(saldoAtual) {

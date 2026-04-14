@@ -1,44 +1,71 @@
-class ValdiarCategoria {
-    // ================= VALIDAÇÕES (privadas) =================
+import AppError from '../../../../shared/errors/AppError.js'
 
-    #validarNome(nome) {
-        if (!nome || typeof nome !== 'string') {
-            throw new ValidationError('Nome é obrigatório', 'CATEGORIA_NOME_OBRIGATORIO')
-        }
-        if (nome.trim().length < 3) {
-            throw new ValidationError('Nome deve ter ao menos 3 caracteres', 'CATEGORIA_NOME_CURTO')
-        }
-        if (nome.trim().length > 50) {
-            throw new ValidationError('Nome deve ter no máximo 50 caracteres', 'CATEGORIA_NOME_LONGO')
-        }
-        return nome.trim()
+export class ValidarCategoria {
+
+  // ================= MÉTODO PÚBLICO =================
+
+  validar(data) {
+    return {
+      nome: this.#validarNome(data.nome),
+      tipo: this.#validarTipo(data.tipo),
+      cor: this.#validarCor(data.cor),
+      usuarioId: this.#validarUsuarioId(data.usuarioId),
+    }
+  }
+
+  // ================= VALIDAÇÕES PRIVADAS =================
+
+  #validarNome(nome) {
+    if (!nome || typeof nome !== 'string') {
+      throw new AppError('Nome é obrigatório', 400)
     }
 
-    #validarTipo(tipo) {
-        const tiposValidos = ['receita', 'despesa']  // ajustei para bater com as regras do domínio
-        if (!tiposValidos.includes(tipo)) {
-            throw new ValidationError(
-                `Tipo inválido. Use: ${tiposValidos.join(' | ')}`,
-                'CATEGORIA_TIPO_INVALIDO'
-            )
-        }
-        return tipo
+    const nomeTratado = nome.trim()
+
+    if (nomeTratado.length < 3) {
+      throw new AppError('Nome deve ter ao menos 3 caracteres', 400)
     }
 
-    #validarCor(cor) {
-        if (!cor) return '#000000'
-        const hexValido = /^#([0-9A-Fa-f]{6})$/.test(cor)
-        if (!hexValido) {
-            throw new ValidationError('Cor deve ser um HEX válido ex: #FF5733', 'CATEGORIA_COR_INVALIDA')
-        }
-        return cor
+    if (nomeTratado.length > 50) {
+      throw new AppError('Nome deve ter no máximo 50 caracteres', 400)
     }
 
-    #validarUsuarioId(usuarioId) {
-        if (!usuarioId) {
-            throw new ValidationError('usuarioId é obrigatório', 'CATEGORIA_USUARIO_OBRIGATORIO')
-        }
-        return usuarioId
+    return nomeTratado
+  }
+
+  #validarTipo(tipo) {
+    const tiposValidos = ['receita', 'despesa']
+
+    if (!tiposValidos.includes(tipo)) {
+      throw new AppError(
+        `Tipo inválido. Use: ${tiposValidos.join(' | ')}`,
+        400
+      )
     }
 
+    return tipo
+  }
+
+  #validarCor(cor) {
+    if (!cor) return '#000000'
+
+    const hexValido = /^#([0-9A-Fa-f]{6})$/.test(cor)
+
+    if (!hexValido) {
+      throw new AppError(
+        'Cor deve ser um HEX válido ex: #FF5733',
+        400
+      )
+    }
+
+    return cor
+  }
+
+  #validarUsuarioId(usuarioId) {
+    if (!usuarioId) {
+      throw new AppError('usuarioId é obrigatório', 400)
+    }
+
+    return usuarioId
+  }
 }
